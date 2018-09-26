@@ -16,7 +16,7 @@ Date: 2018-09-27 01:54:07
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for accountinfo
+-- Table structure for accountinfo  用户账号表
 -- ----------------------------
 DROP TABLE IF EXISTS `accountinfo`;
 CREATE TABLE `accountinfo` (
@@ -29,7 +29,7 @@ CREATE TABLE `accountinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for accountsinfo
+-- Table structure for accountsinfo  用户流水表
 -- ----------------------------
 DROP TABLE IF EXISTS `accountsinfo`;
 CREATE TABLE `accountsinfo` (
@@ -43,7 +43,7 @@ CREATE TABLE `accountsinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for actualserviceinfo
+-- Table structure for actualserviceinfo  店铺运营表
 -- ----------------------------
 DROP TABLE IF EXISTS `actualserviceinfo`;
 CREATE TABLE `actualserviceinfo` (
@@ -56,7 +56,7 @@ CREATE TABLE `actualserviceinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for addressinfo
+-- Table structure for addressinfo  送餐地址表
 -- ----------------------------
 DROP TABLE IF EXISTS `addressinfo`;
 CREATE TABLE `addressinfo` (
@@ -68,7 +68,7 @@ CREATE TABLE `addressinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for chatinfo
+-- Table structure for chatinfo 会话消息内容表
 -- ----------------------------
 DROP TABLE IF EXISTS `chatinfo`;
 CREATE TABLE `chatinfo` (
@@ -82,7 +82,7 @@ CREATE TABLE `chatinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for chattitleinfo
+-- Table structure for chattitleinfo   会话消息标题表
 -- ----------------------------
 DROP TABLE IF EXISTS `chattitleinfo`;
 CREATE TABLE `chattitleinfo` (
@@ -94,7 +94,7 @@ CREATE TABLE `chattitleinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for collectioninfo
+-- Table structure for collectioninfo   收藏表
 -- ----------------------------
 DROP TABLE IF EXISTS `collectioninfo`;
 CREATE TABLE `collectioninfo` (
@@ -106,7 +106,7 @@ CREATE TABLE `collectioninfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for dishesinfo
+-- Table structure for dishesinfo  菜品表
 -- ----------------------------
 DROP TABLE IF EXISTS `dishesinfo`;
 CREATE TABLE `dishesinfo` (
@@ -130,7 +130,7 @@ CREATE TABLE `dishesinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for dishespicinfo
+-- Table structure for dishespicinfo 菜品图片关联表
 -- ----------------------------
 DROP TABLE IF EXISTS `dishespicinfo`;
 CREATE TABLE `dishespicinfo` (
@@ -139,7 +139,7 @@ CREATE TABLE `dishespicinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for dishestempassociatedinfo
+-- Table structure for dishestempassociatedinfo  菜品模板表
 -- ----------------------------
 DROP TABLE IF EXISTS `dishestempassociatedinfo`;
 CREATE TABLE `dishestempassociatedinfo` (
@@ -149,7 +149,7 @@ CREATE TABLE `dishestempassociatedinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for dishestempinfo
+-- Table structure for dishestempinfo   菜品模板-菜品 关联表
 -- ----------------------------
 DROP TABLE IF EXISTS `dishestempinfo`;
 CREATE TABLE `dishestempinfo` (
@@ -160,7 +160,7 @@ CREATE TABLE `dishestempinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for employeesinfo
+-- Table structure for employeesinfo  员工表
 -- ----------------------------
 DROP TABLE IF EXISTS `employeesinfo`;
 CREATE TABLE `employeesinfo` (
@@ -178,7 +178,7 @@ CREATE TABLE `employeesinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for evaluationinfo
+-- Table structure for evaluationinfo 评价表
 -- ----------------------------
 DROP TABLE IF EXISTS `evaluationinfo`;
 CREATE TABLE `evaluationinfo` (
@@ -197,7 +197,7 @@ CREATE TABLE `evaluationinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for logoinfo
+-- Table structure for logoinfo  系统日志表
 -- ----------------------------
 DROP TABLE IF EXISTS `logoinfo`;
 CREATE TABLE `logoinfo` (
@@ -212,7 +212,7 @@ CREATE TABLE `logoinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for merchantsinfo
+-- Table structure for merchantsinfo  商家表
 -- ----------------------------
 DROP TABLE IF EXISTS `merchantsinfo`;
 CREATE TABLE `merchantsinfo` (
@@ -232,7 +232,7 @@ CREATE TABLE `merchantsinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for orderinfo
+-- Table structure for orderinfo 订单表
 -- ----------------------------
 DROP TABLE IF EXISTS `orderinfo`;
 CREATE TABLE `orderinfo` (
@@ -264,7 +264,7 @@ CREATE TABLE `orderinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for orderofdishesinfo
+-- Table structure for orderofdishesinfo   订单详细信息表
 -- ----------------------------
 DROP TABLE IF EXISTS `orderofdishesinfo`;
 CREATE TABLE `orderofdishesinfo` (
@@ -280,7 +280,7 @@ CREATE TABLE `orderofdishesinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for packageinfo
+-- Table structure for packageinfo 套餐表
 -- ----------------------------
 DROP TABLE IF EXISTS `packageinfo`;
 CREATE TABLE `packageinfo` (
@@ -295,7 +295,7 @@ CREATE TABLE `packageinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for picinfo
+-- Table structure for picinfo 图片表
 -- ----------------------------
 DROP TABLE IF EXISTS `picinfo`;
 CREATE TABLE `picinfo` (
@@ -305,7 +305,7 @@ CREATE TABLE `picinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for platforminfo
+-- Table structure for platforminfo  平台基本信息表
 -- ----------------------------
 DROP TABLE IF EXISTS `platforminfo`;
 CREATE TABLE `platforminfo` (
@@ -318,7 +318,7 @@ CREATE TABLE `platforminfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for roleinfo
+-- Table structure for roleinfo  权限表
 -- ----------------------------
 DROP TABLE IF EXISTS `roleinfo`;
 CREATE TABLE `roleinfo` (
@@ -331,7 +331,7 @@ CREATE TABLE `roleinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for serialinfo
+-- Table structure for serialinfo   系统流水表 
 -- ----------------------------
 DROP TABLE IF EXISTS `serialinfo`;
 CREATE TABLE `serialinfo` (
@@ -350,7 +350,7 @@ CREATE TABLE `serialinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for storeaddressinfo
+-- Table structure for storeaddressinfo  店铺地址关联表
 -- ----------------------------
 DROP TABLE IF EXISTS `storeaddressinfo`;
 CREATE TABLE `storeaddressinfo` (
@@ -359,7 +359,7 @@ CREATE TABLE `storeaddressinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for storeauditpicinfo
+-- Table structure for storeauditpicinfo  店铺图片关联表
 -- ----------------------------
 DROP TABLE IF EXISTS `storeauditpicinfo`;
 CREATE TABLE `storeauditpicinfo` (
@@ -368,8 +368,8 @@ CREATE TABLE `storeauditpicinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for storeinfo
--- ----------------------------
+-- Table structure for storeinfo  店铺表
+-- ---------------------------- 
 DROP TABLE IF EXISTS `storeinfo`;
 CREATE TABLE `storeinfo` (
   `StoreOID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '店铺主键id',
@@ -394,7 +394,7 @@ CREATE TABLE `storeinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for storeshowpicinfo
+-- Table structure for storeshowpicinfo  店铺展示图片关联表
 -- ----------------------------
 DROP TABLE IF EXISTS `storeshowpicinfo`;
 CREATE TABLE `storeshowpicinfo` (
@@ -403,7 +403,7 @@ CREATE TABLE `storeshowpicinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for userinfo
+-- Table structure for userinfo  用户表
 -- ----------------------------
 DROP TABLE IF EXISTS `userinfo`;
 CREATE TABLE `userinfo` (
@@ -422,3 +422,6 @@ CREATE TABLE `userinfo` (
   `AccountId` bigint(20) NOT NULL COMMENT '账号主键id',
   PRIMARY KEY (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- ------------------------------
+---银行卡 表 暂时不设计， 考虑微信 只能使用微信支付， apple pay 内置 支付提现功能，可以添加绑定银行卡，可直接使用。 
+-- ----------------------------
