@@ -25,6 +25,7 @@ CREATE TABLE `accountinfo` (
   `Emial` varchar(25) NOT NULL COMMENT '电子邮件',
   `WechatOpenid` varchar(25) NOT NULL COMMENT '微信openid',
   `PassWord` varchar(255) DEFAULT NULL COMMENT '密码',
+  `Merchantsinfo` bit Not NULL COMMENT '是否是商家',
   PRIMARY KEY (`AccountId`,`PhoneNumbe`,`Emial`,`WechatOpenid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
