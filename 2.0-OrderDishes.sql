@@ -1,810 +1,568 @@
 /*
-Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
-Source Server         : 101.37.124.77
-Source Server Version : 50722
-Source Host           : 101.37.124.77:3306
-Source Database       : OrderDb
+ Source Server         : localhost_3306
+ Source Server Type    : MySQL
+ Source Server Version : 50527
+ Source Host           : localhost:3306
+ Source Schema         : order
 
-Target Server Type    : MYSQL
-Target Server Version : 50722
-File Encoding         : 65001
+ Target Server Type    : MySQL
+ Target Server Version : 50527
+ File Encoding         : 65001
 
-Date: 2018-10-21 2:24:00
+ Date: 03/12/2018 10:43:16
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ----------------------------
--- Table structure for Address
--- µØÖ·±í
--- ËµÃ÷£ºÉèÖÃ ÏµÍ³ÖĞËÍ²ÍµØÖ·£¬ÓÃ»§¿ÉÍ¨¹ı µØÖ·£¬ÓÊ±à À´Æ¥Åä »òÉèÖÃ ×Ô¼ºµÄÄ¬ÈÏËÍ²ÍµØÖ·£¬ÓÃ»§Ö»ÄÜÉèÖÃÒ»¸öÄ¬ÈÏËÍ²ÍµØÖ·¡£ÉÌ¼Ò¿ÉÒÔ¹ØÁª¶à¸öËÍ²ÍµØÖ·¡£
+-- Table structure for address
 -- ----------------------------
-DROP TABLE IF EXISTS `Address`;
-CREATE TABLE `Address` (
-  `addressId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'µØÖ·Ö÷¼ü±àºÅ',
-  `addressName` varchar(50) NOT NULL COMMENT 'µØÖ·',
-  `zipCode` varchar(50) NOT NULL COMMENT 'ÓÊ±à',
-  `city` varchar(50) NOT NULL COMMENT '³ÇÊĞ',
-  `state` varchar(50) NOT NULL COMMENT 'Öİ',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`addressId`)
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE `address`  (
+  `addressId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'åœ°å€ä¸»é”®ç¼–å·',
+  `addressName` varchar(50) NOT NULL DEFAULT '' COMMENT 'åœ°å€',
+  `zipCode` varchar(50) NOT NULL DEFAULT '' COMMENT 'é‚®ç¼–',
+  `city` varchar(50) NOT NULL DEFAULT '' COMMENT 'åŸå¸‚',
+  `state` varchar(50) NOT NULL DEFAULT '' COMMENT 'å·',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',    
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`addressId`) 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for combo
+-- ----------------------------
+DROP TABLE IF EXISTS `combo`;
+CREATE TABLE `combo`  (
+  `comboId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+  `comboTemplateId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ComboTemplateè¡¨ä¸»é”®id',
+  PRIMARY KEY (`comboId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Table structure for comboandfooditemassociation
+-- ----------------------------
+DROP TABLE IF EXISTS `comboandfooditemassociation`;
+CREATE TABLE `comboandfooditemassociation`  (
+  `comboId` bigint(20) NOT NULL COMMENT 'Comboè¡¨ä¸»é”®id',
+  `foodItemId` bigint(20) NOT NULL COMMENT 'èœå“è¡¨ä¸»é”®ç¼–å·',
+  `foodItemCount` int(11) NOT NULL DEFAULT -1 COMMENT 'èœå“ä»½æ•°',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`comboId`, `foodItemId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Address
+-- Table structure for combotemplate
 -- ----------------------------
-
-
-
--- ----------------------------
--- Table structure for Combo
--- ÓÃ»§µÄµãµÄÌ×²Í 
--- ----------------------------
-DROP TABLE IF EXISTS `Combo`;
-CREATE TABLE `Combo` (
-  `comboId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-  `comboTemplateId` bigint(20) NOT NULL   COMMENT 'ComboTemplate±íÖ÷¼üid',
-  PRIMARY KEY (`comboId`)
+DROP TABLE IF EXISTS `combotemplate`;
+CREATE TABLE `combotemplate`  (
+  `comboTemplateId` bigint(20) NOT NULL COMMENT 'å¥—é¤ä¸»é”®ç¼–å·',
+  `comboTemplateName` varchar(20) NOT NULL DEFAULT '' COMMENT 'å¥—é¤åç§°',
+  `comboTemplateNumber` int(11) NOT NULL DEFAULT -1 COMMENT 'åŒ…å«èœå“åˆ†æ•°',
+  `comboTemplateDiscount` double NOT NULL DEFAULT -1 COMMENT 'æŠ˜æ‰£æ¯”ä¾‹',
+  `comboTemplateRemainingCount` int(11) NOT NULL DEFAULT -1 COMMENT 'å¯å‡ºå”®ä»½æ•°',
+  `pictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å¥—é¤å›¾ç‰‡id',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'åº—é“ºä¸»é”®id',
+  PRIMARY KEY (`comboTemplateId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Combo
+-- Table structure for customer
 -- ----------------------------
-
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE `customer`  (
+  `customerId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `phoneNumber` varchar(25) NULL DEFAULT '' COMMENT 'ç”µè¯å·ç ',
+  `email` varchar(25) NULL DEFAULT '' COMMENT 'é‚®ç®±',
+  `wechatOpenid` varchar(25) NULL DEFAULT '' COMMENT 'å¾®ä¿¡id',
+  `phoneNumberIsValidated` varchar(25) NULL DEFAULT '' COMMENT 'ç”µè¯å·ç ',
+  `emailIsValidated` varchar(25) NULL DEFAULT '' COMMENT 'é‚®ç®±',
+  `wechatOpenidIsValidated` varchar(25) NULL DEFAULT '' COMMENT 'å¾®ä¿¡id',
+  `avatarPictureId` bigint(20) NULL DEFAULT -1 COMMENT 'å¤´åƒå¯¹åº”å›¾ç‰‡id',
+  `createdAt` datetime NULL DEFAULT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `nickName` varchar(25) NULL DEFAULT '' COMMENT 'æ˜µç§°',
+  `firstName` varchar(50) NULL DEFAULT '' COMMENT 'å',
+  `lastName` varchar(50) NULL DEFAULT '' COMMENT 'å§“',
+  `sex` bit(1) NULL DEFAULT b'0' COMMENT 'æ€§åˆ«',
+  `balance` decimal(10, 2) NULL DEFAULT 0.00 COMMENT 'ä½™é¢',
+  `addressId` bigint(20) NULL DEFAULT -1 COMMENT 'å–é¤åœ°å€id',
+  PRIMARY KEY (`customerId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ----------------------------
--- Table structure for ComboAndFoodItemAssociation
--- ¼ÇÂ¼ÓÃ»§µÄµãµÄÌ×²Í ÖĞ¶ÔÓ¦ÁËÄÄĞ©²ËÆ·
+-- Table structure for customerauth
 -- ----------------------------
-DROP TABLE IF EXISTS `ComboAndFoodItemAssociation`;
-CREATE TABLE `ComboAndFoodItemAssociation` (
-  `comboId` bigint(20) NOT NULL   COMMENT 'Combo±íÖ÷¼üid',
-  `foodItemId` bigint(20) NOT NULL COMMENT '²ËÆ·±íÖ÷¼ü±àºÅ',
-  `foodItemCount` int(11) NOT NULL COMMENT '²ËÆ··İÊı',
-  `isDeleted` bit NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`comboId`,`foodItemId`)
+DROP TABLE IF EXISTS `customerauth`;
+CREATE TABLE `customerauth`  (
+  `customerAuthId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ç”¨æˆ·è´¦æˆ·è¡¨id',
+  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `customerSecretkey` varchar(100) NOT NULL DEFAULT '' COMMENT 'ç”¨æˆ·ç§˜é’¥',
+  `password` varchar(255) NOT NULL DEFAULT '' COMMENT 'å¯†ç ',
+  `createdAt` datetime NULL DEFAULT NULL COMMENT 'æ³¨å†Œæ—¶é—´',
+  `allowLogin` varchar(255) NOT NULL DEFAULT '' COMMENT 'å…è®¸ç§»åŠ¨ç«¯ç™»é™†',
+  PRIMARY KEY (`customerAuthId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of ComboAndFoodItemAssociation
+-- Table structure for customerstoreconversion
 -- ----------------------------
-
--- ----------------------------
--- Table structure for ComboTemplate
--- Ì×²Í±í
--- ËµÃ÷£ºÉèÖÃ µêÆÌÖĞµÄÌ×²Í¡£Ò»¸öµêÆÌ ¿ÉÒÔ ÓĞ¶à¸öÌ×²Í£¬Ì×²Í°üÀ¨ ĞèÒª¶àÉÙ²ËÆ·¡£
--- ¿É³öÊÛ¶àÉÙ·İ¡£ÕÛ¿Û±ÈÀı¡£
--- ----------------------------
-DROP TABLE IF EXISTS `ComboTemplate`;
-CREATE TABLE `ComboTemplate` (
-  `comboTemplateId` bigint(20) NOT NULL COMMENT 'Ì×²ÍÖ÷¼ü±àºÅ',
-  `comboTemplateName` varchar(20) NOT NULL COMMENT 'Ì×²ÍÃû³Æ',
-  `comboTemplateNumber` int(11) NOT NULL COMMENT '°üº¬²ËÆ··ÖÊı',
-  `comboTemplateDiscount` double NOT NULL COMMENT 'ÕÛ¿Û±ÈÀı',
-  `comboTemplateRemainingCount` int(11) NOT NULL COMMENT '¿É³öÊÛ·İÊı',
-  `pictureId` varchar(20) NOT NULL COMMENT 'Ì×²ÍÍ¼Æ¬id',
-  `storeId` bigint(20) NOT NULL COMMENT 'µêÆÌÖ÷¼üid',
-  PRIMARY KEY (`comboTemplateId`)
+DROP TABLE IF EXISTS `customerstoreconversion`;
+CREATE TABLE `customerstoreconversion`  (
+  `customerId` bigint(20) NOT NULL COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `storeId` bigint(20) NOT NULL COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  PRIMARY KEY (`customerId`, `storeId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of ComboTemplate
+-- Table structure for employee
 -- ----------------------------
-
-
-
--- ----------------------------
--- Table structure for Customer
--- ÓÃ»§ĞÅÏ¢±í
--- ËµÃ÷£º±£´æÓÃ»§»ù±¾ĞÅÏ¢£¬Èç¹ûÄ¬ÈÏËÍ²ÍµØÖ·£¬×¢²áÊ±¼ä£¬Óà¶î¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Customer`;
-CREATE TABLE `Customer` (
-  `customerId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÓÃ»§Ö÷¼üid',
-  `phoneNumber` varchar(25) NOT NULL DEFAULT '' COMMENT 'µç»°ºÅÂë',
-  `email` varchar(25) NOT NULL DEFAULT '' COMMENT 'ÓÊÏä',
-  `wechatOpenid` varchar(25) NOT NULL DEFAULT '' COMMENT 'Î¢ĞÅid',
-  `phoneNumberIsValidated` varchar(25) NOT NULL DEFAULT FALSE COMMENT 'µç»°ºÅÂë',
-  `emailIsValidated` varchar(25) NOT NULL DEFAULT FALSE COMMENT 'ÓÊÏä',
-  `wechatOpenidIsValidated` varchar(25) NOT NULL DEFAULT FALSE COMMENT 'Î¢ĞÅid',
-  `avatarPictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'Í·Ïñ¶ÔÓ¦Í¼Æ¬id',
-  `createdAt` datetime NOT NULL COMMENT '´´½¨Ê±¼ä',
-  `nickName` varchar(25) NOT NULL COMMENT 'êÇ³Æ',
-  `firstName` varchar(50) NOT NULL COMMENT 'Ãû',
-  `lastName` varchar(50) NOT NULL COMMENT 'ĞÕ',
-  `sex` bit(1) NOT NULL COMMENT 'ĞÔ±ğ',
-  `balance` decimal(10,0) NOT NULL DEFAULT 0 COMMENT 'Óà¶î',
-  `addressId` bigint(20) NOT NULL COMMENT 'È¡²ÍµØÖ·id',
-  PRIMARY KEY (`customerId`)
+DROP TABLE IF EXISTS `employee`;
+CREATE TABLE `employee`  (
+  `employeeId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'å‘˜å·¥ä¸»é”®id',
+  `loginName` varchar(255) NOT NULL COMMENT 'ç™»é™†è´¦å·',
+  `loginPassword` varchar(255) NOT NULL DEFAULT '' COMMENT 'ç™»é™†å¯†ç ',
+  `roleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'è§’è‰²ç¼–å·',
+  `realName` varchar(255) NOT NULL DEFAULT '' COMMENT 'çœŸå®åç§°',
+  `roleName` varchar(255) NOT NULL DEFAULT '' COMMENT 'è§’è‰²åç§°',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `isAdmin` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦æ˜¯ç³»ç»Ÿç®¡ç†å‘˜',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  `allowLogin` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦å…è®¸ç™»é™†',
+  PRIMARY KEY (`employeeId`, `loginName`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Customer
+-- Table structure for favorite
 -- ----------------------------
-
--- ----------------------------
--- Table structure for CustomerAuth
--- ÓÃ»§ÕË»§±íid
--- ËµÃ÷£º±£´æÓÃ»§ÕË»§ÃÜÂë ºÍÃÜÔ¿  ¡£ÊÇ·ñ±»ºóÌ¨½ûÖ¹µÇÂ½
--- ----------------------------
-DROP TABLE IF EXISTS `CustomerAuth`;
-CREATE TABLE `CustomerAuth` (
-  `customerAuthId` bigint(20) NOT NULL  COMMENT 'ÓÃ»§ÕË»§±íid',
-  `customerId` bigint(20) NOT NULL  COMMENT 'ÓÃ»§Ö÷¼üid',
-  `customerSecretkey` bigint(20) NOT NULL  COMMENT 'ÓÃ»§ÃØÔ¿',
-  `password` varchar(255) NOT NULL COMMENT 'ÃÜÂë',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '×¢²áÊ±¼ä',
-  `allowLogin` varchar(255) NOT NULL DEFAULT TRUE COMMENT 'ÔÊĞíÒÆ¶¯¶ËµÇÂ½',
-  PRIMARY KEY (`customerAuthId`)
+DROP TABLE IF EXISTS `favorite`;
+CREATE TABLE `favorite`  (
+  `favoriteId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'æ”¶è—ä¸»é”®id',
+  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'åº—é“ºä¸»é”®id',
+  `foodItemId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'èœå“ä¸»é”®id',
+  `comboTemplateId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å¥—é¤ä¸»é”®id',
+  PRIMARY KEY (`favoriteId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of CustomerAuth
+-- Table structure for feedback
 -- ----------------------------
-
-
--- ----------------------------
--- Table structure for CustomerStoreConversion
--- ÓÃ»§ÉÌ¼Ò×ª»¯±í
--- ËµÃ÷£º
--- ----------------------------
-DROP TABLE IF EXISTS `CustomerStoreConversion`;
-CREATE TABLE `CustomerStoreConversion`(
-  `customerId` bigint(20) NOT NULL COMMENT 'ÓÃ»§Ö÷¼üid',
-  `storeId` bigint(20) NOT NULL COMMENT 'ÓÃ»§Ö÷¼üid',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  PRIMARY KEY (`customerId`,`storeId` )
+DROP TABLE IF EXISTS `feedback`;
+CREATE TABLE `feedback`  (
+  `feedbackId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'æ¶ˆæ¯äººä¸»é”®id',
+  `sendPeopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å‘é€æ¶ˆæ¯äººä¸»é”®id',
+  `sendPeopleType` int(11) NOT NULL DEFAULT -1 COMMENT 'æ¶ˆæ¯å‘é€äººç±»å‹',
+  `sendIsRead` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ¶ˆæ¯å‘é€äººæ˜¯å¦é˜…è¯»',
+  `receivePeopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'æ¥å—æ¶ˆæ¯äººä¸»é”®id',
+  `receivePeopleType` int(11) NOT NULL DEFAULT -1 COMMENT 'æ¶ˆæ¯æ¥å—äººç±»å‹',
+  `receiveIsRead` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ¶ˆæ¯æ¥å—äººæ˜¯å¦é˜…è¯»',
+  `beReportedStoreId` bigint(255) NOT NULL DEFAULT -1 COMMENT 'è¢«ä¸¾æŠ¥å•†å®¶ç¼–å·ï¼šæ¥æ ‡ç¤ºæ˜¯å¦æ˜¯ä¸¾æŠ¥ä¿¡æ¯ å’Œè¢«ä¸¾æŠ¥äººçš„ä¸»é”®idï¼Œ',
+  `feedbackContent` varchar(255) NOT NULL DEFAULT '' COMMENT 'èŠå¤©å†…å®¹',
+  PRIMARY KEY (`feedbackId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of CustomerStoreConversion
+-- Table structure for feedbackpictureassociation
 -- ----------------------------
-
-
--- ----------------------------
--- Table structure for Employee
--- Ô±¹¤ĞÅÏ¢±í
--- ËµÃ÷£º´Ë±íÖ÷Òª ¹ÜÀíºóÌ¨Ô±¹¤£¬ÄÚÉèÏµÍ³ÓÃ»§£¨admin  ³¬¼¶¹ÜÀíÔ± Ö»ÄÜÓÉÒ»¸ö³¬¼¶¹ÜÀíÔ±£¬°üº¬ºóÌ¨ËùÓĞÈ¨ÏŞ¡££©
--- ÆäËû Ô±¹¤£¬ÓĞºóÌ¨¹ÜÀíÔ±Ìí¼Ó »òÕßÓÉ ÓĞÌí¼ÓÔ±¹¤È¨ÏŞµÄ½ÇÉ«Ìí¼Ó£¬ Ìí¼ÓµÄÔ±¹¤¿ÉÒÔ ·ÖÅäÈ¨ÏŞ¡£·Ö¹¦¹ÜÀíÄ£¿é¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Employee`;
-CREATE TABLE `Employee` (
-  `employeeId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Ô±¹¤Ö÷¼üid',
-  `loginName` varchar(255) NOT NULL COMMENT 'µÇÂ½ÕËºÅ',
-  `loginPassword` varchar(255) NOT NULL COMMENT 'µÇÂ½ÃÜÂë',
-  `roleId` bigint(20) NOT NULL COMMENT '½ÇÉ«±àºÅ',
-  `realName` varchar(255) NOT NULL COMMENT 'ÕæÊµÃû³Æ',
-  `roleName` varchar(255) NOT NULL COMMENT '½ÇÉ«Ãû³Æ',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  `isAdmin` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÊÇÏµÍ³¹ÜÀíÔ±',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  `allowLogin` bit(1) NOT NULL DEFAULT TRUE COMMENT 'ÊÇ·ñÔÊĞíµÇÂ½',
-  PRIMARY KEY (`employeeId`,`loginName`)
+DROP TABLE IF EXISTS `feedbackpictureassociation`;
+CREATE TABLE `feedbackpictureassociation`  (
+  `feedbackId` bigint(20) NOT NULL COMMENT 'æ¶ˆæ¯ä¸»é”®id',
+  `pictureId` bigint(20) NOT NULL COMMENT 'å›¾ç‰‡ä¸»é”®id',
+  PRIMARY KEY (`feedbackId`, `pictureId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Employee
+-- Table structure for fooditem
 -- ----------------------------
-
--- ----------------------------
--- Table structure for Favorite
--- ÊÕ²Ø±í
--- ËµÃ÷£ºÓÃ»§ÊÕ²ØĞÅÏ¢±í ¡£´Ë±íÖ»Õë¶Ô ÓÃ»§£¬ÓÃ»§¿ÉÒÔÌí¼ÓµêÆÌ»òÕß²ËÆ·À´½øĞĞÊÕ²Ø¡£
--- ¸ù¾İfavoriatetype À´ÅĞ¶Ï ÊÕ²ØµÄÊÇµêÆÌ»¹ÊÇ²ËÆ·¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Favorite`;
-CREATE TABLE `Favorite` (
-  `favoriteId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÊÕ²ØÖ÷¼üid',
-  `customerId` bigint(20) NOT NULL COMMENT 'ÓÃ»§Ö÷¼üid',
-  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'µêÆÌÖ÷¼üid',
-  `foodItemId` bigint(20) NOT NULL DEFAULT -1 COMMENT '²ËÆ·Ö÷¼üid',
-  `comboTemplateId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'Ì×²ÍÖ÷¼üid',
-   PRIMARY KEY (`favoriteId`)
+DROP TABLE IF EXISTS `fooditem`;
+CREATE TABLE `fooditem`  (
+  `foodItemId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'äº§å“ä¸»é”®id',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT 'èœå“åç§°',
+  `price` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'ä»·æ ¼',
+  `remainingCount` int(11) NOT NULL DEFAULT 0 COMMENT 'åº“å­˜æ•°é‡',
+  `primaryIngredient` varchar(255) NOT NULL DEFAULT '' COMMENT 'å•†å“ä¸»æ',
+  `complementaryIngredient` varchar(255) NOT NULL DEFAULT '' COMMENT 'å•†å“è¾…æ',
+  `rank` int(11) NOT NULL DEFAULT -1 COMMENT 'å•†å“æ’åº',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT 'æè¿°',
+  `dailySpecialPrice` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'ç‰¹æƒ ä»·æ ¼',
+  `isAvailable` bit(1) NOT NULL DEFAULT b'0' COMMENT 'ä¸Šä¸‹æ¶',
+  `storeId` bigint(1) NOT NULL DEFAULT -1 COMMENT 'åº—é“ºä¸»é”®id',
+  `pictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å›¾ç‰‡ä¸»é”®id',
+  PRIMARY KEY (`foodItemId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Favorite
+-- Table structure for fooditemandtemplateassociation
 -- ----------------------------
-
--- ----------------------------
--- Table structure for Feedback
--- ÏûÏ¢·´À¡±í
--- ËµÃ÷£ºÓÃÓÚÓÃ»§ÏòÏµÍ³ ·¢ËÍ¾Ù±¨ĞÅÏ¢¡£»òÕßÏµÍ³ÏòÓÃ»§·¢ËÍÏûÏ¢¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Feedback`;
-CREATE TABLE `Feedback` (
-  `feedbackId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÏûÏ¢ÈËÖ÷¼üid',
-  `sendPeopleId` bigint(20) NOT NULL  COMMENT '·¢ËÍÏûÏ¢ÈËÖ÷¼üid',
-  `sendPeopleType` int(11) NOT NULL COMMENT 'ÏûÏ¢·¢ËÍÈËÀàĞÍ',
-  `sendIsRead` bit NOT NULL DEFAULT FALSE COMMENT 'ÏûÏ¢·¢ËÍÈËÊÇ·ñÔÄ¶Á',
-  `receivePeopleId` bigint(20) NOT NULL  COMMENT '½ÓÊÜÏûÏ¢ÈËÖ÷¼üid',
-  `receivePeopleType` int(11) NOT NULL COMMENT 'ÏûÏ¢½ÓÊÜÈËÀàĞÍ',
-  `receiveIsRead` bit NOT NULL COMMENT 'ÏûÏ¢½ÓÊÜÈËÊÇ·ñÔÄ¶Á',
-  `beReportedStoreId` varchar(255) NOT NULL DEFAULT -1 COMMENT '±»¾Ù±¨ÉÌ¼Ò±àºÅ£ºÀ´±êÊ¾ÊÇ·ñÊÇ¾Ù±¨ĞÅÏ¢ ºÍ±»¾Ù±¨ÈËµÄÖ÷¼üid£¬',
-  `feedbackContent` varchar(255) NOT NULL COMMENT 'ÁÄÌìÄÚÈİ',
-  PRIMARY KEY (`feedbackId`)
-  
+DROP TABLE IF EXISTS `fooditemandtemplateassociation`;
+CREATE TABLE `fooditemandtemplateassociation`  (
+  `foodItemTemplateId` bigint(11) NOT NULL COMMENT 'æ¨¡æ¿ç¼–å·',
+  `foodItemId` bigint(11) NOT NULL COMMENT 'èœå“ç¼–å·',
+  PRIMARY KEY (`foodItemTemplateId`, `foodItemId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Feedback
+-- Table structure for fooditempictureassociation
 -- ----------------------------
+DROP TABLE IF EXISTS `fooditempictureassociation`;
+CREATE TABLE `fooditempictureassociation`  (
+  `fooditemId` int(11) NOT NULL COMMENT 'èœå“ä¸»é”®',
+  `pictureId` int(11) NOT NULL COMMENT 'å›¾ç‰‡id',
+  PRIMARY KEY (`fooditemId`, `pictureId`) 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for FeedbackPictureAssociation
--- ÏûÏ¢·´À¡±í-Í¼Æ¬¹ØÁª±í
--- ËµÃ÷£ºÓÃÓÚÓÃ»§ÏòÏµÍ³ ·¢ËÍ¾Ù±¨ĞÅÏ¢¡£
--- ¸ù¾İfavoriatetype À´ÅĞ¶Ï ÊÕ²ØµÄÊÇµêÆÌ»¹ÊÇ²ËÆ·¡£
+-- Table structure for fooditemtemplate
 -- ----------------------------
-DROP TABLE IF EXISTS `FeedbackPictureAssociation`;
-CREATE TABLE `FeedbackPictureAssociation` (
-  `feedbackId` bigint(20) NOT NULL  COMMENT 'ÏûÏ¢Ö÷¼üid',
-  `pictureId` bigint(20) NOT NULL  COMMENT 'Í¼Æ¬Ö÷¼üid',
-   PRIMARY KEY (`feedbackId`,`pictureId`)
+DROP TABLE IF EXISTS `fooditemtemplate`;
+CREATE TABLE `fooditemtemplate`  (
+  `foodItemTemplateId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'èœå“æ¨¡æ¿ä¸»é”®ç¼–å·',
+  `foodItemTemplateName` varchar(20) NOT NULL DEFAULT '' COMMENT 'èœå“æ¨¡æ¿åç§°',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`foodItemTemplateId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of FeedbackPictureAssociation
+-- Table structure for log
 -- ----------------------------
-
--- ----------------------------
--- Table structure for FoodItem
--- ²ËÆ·±í
--- ËµÃ÷£ºµêÆÌÖĞµÄ²ËÆ·±íµÄ»ù±¾ĞÅÏ¢¡£°üº¬²ËÆ·µÄ¼Û¸ñ£¬Ãû³Æ£¬¿â´æÊıÁ¿µÈ
--- Í¨¹ıµêÆÌ Ö÷¼üid storeid À´¹ØÁªËùÊôµêÆÌ
--- ----------------------------
-DROP TABLE IF EXISTS `FoodItem`;
-CREATE TABLE `FoodItem` (
-  `foodItemId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '²úÆ·Ö÷¼üid',
-  `name` varchar(50) NOT NULL COMMENT '²ËÆ·Ãû³Æ',
-  `price` decimal(10,0) NOT NULL COMMENT '¼Û¸ñ',
-  `remainingCount` int(11) NOT NULL DEFAULT 0 COMMENT '¿â´æÊıÁ¿',
-  `primaryIngredient` varchar(255) NOT NULL DEFAULT '' COMMENT 'ÉÌÆ·Ö÷²Ä',
-  `complementaryIngredient` varchar(255) NOT NULL DEFAULT '' COMMENT 'ÉÌÆ·¸¨²Ä',
-  `rank` int(11) NOT NULL COMMENT 'ÉÌÆ·ÅÅĞò',
-  `description` varchar(255) NOT NULL COMMENT 'ÃèÊö',
-  `dailySpecialPrice` decimal(10,0) NOT NULL COMMENT 'ÌØ»İ¼Û¸ñ',
-  `isAvailable` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÉÏÏÂ¼Ü',
-  `storeId` bit(1) NOT NULL COMMENT 'µêÆÌÖ÷¼üid',
-  `pictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT '·âÃæÍ¼Æ¬Ö÷¼üid',
-  PRIMARY KEY (`fooditemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of FoodItem
--- ----------------------------
-
--- ----------------------------
--- Table structure for FoodItemAndTemplateAssociation
--- ²ËÆ· -²ËÆ·Ä£°å¹ØÁª±í
--- ----------------------------
-DROP TABLE IF EXISTS `FoodItemAndTemplateAssociation`;
-CREATE TABLE `FoodItemAndTemplateAssociation` (
-  `foodItemTemplateId` int(11) NOT NULL COMMENT 'Ä£°å±àºÅ',
-  `foodItemId` varchar(255) NOT NULL COMMENT '²ËÆ·±àºÅ',
- PRIMARY KEY (`foodItemTemplateId`,`foodItemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of FoodItemAndTemplateAssociation
--- ----------------------------
-
--- ----------------------------
--- Table structure for FoodItemPictureAssociation
--- ²ËÆ·-Í¼Æ¬¹ØÁª±í
--- ËµÃ÷£ºÖ÷Òª¹ØÁª²ËÆ·ºÍÍ¼Æ¬ ²ÉÓÃ Ò»¸ö²ËÆ· ¶ÔÓ¦ ¶àÕÅÍ¼Æ¬¡£
--- ----------------------------
-DROP TABLE IF EXISTS `FoodItemPictureAssociation`;
-CREATE TABLE `FoodItemPictureAssociation` (
-  `fooditemId` int(11) NOT NULL COMMENT '²ËÆ·Ö÷¼ü',
-  `pictureId` int(11) NOT NULL COMMENT 'Í¼Æ¬id',
-PRIMARY KEY (`fooditemId`,`pictureId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of FoodItemPictureAssociation
--- ----------------------------
-
--- ----------------------------
--- Table structure for FoodItemTemplate
--- ²ËÆ·Ä£°å±í
--- ËµÃ÷£ºÖ÷ÒªÓ¦ÓÃÓÚÓªÔËĞÅÏ¢ ÉèÖÃÃ¿ÈÕ ¿ÉÏúÊÛ²ËÆ·¡£ÔÚÓªÔË±íÖĞ¡£
--- ÔÚActualService ±íÖĞ ¹ØÁª´Ë±í¡£Ïàµ±ÓÚ Ã¿Ìì¶¼¶ÔÓ¦Ò»¸öÓªÔËÄ£°åid£¬Ò»¸öÓªÔËÄ£°å¿ÉÒÔÓ¦ÓÃÓÚ¶à¸öÈÕÆÚ
--- Ã¿´Î ĞŞ¸ÄÓªÔËÄ£°å ĞÂÔöÒ»¸öÓªÔËÄ£°å £¨ÒÔ Ö÷¼üÀ´Çø±ğ£¬Ä£°åÃû³ÆÖ»×ö±êÊ¾£©
--- ----------------------------
-DROP TABLE IF EXISTS `FoodItemTemplate`;
-CREATE TABLE `FoodItemTemplate` (
-  `foodItemTemplateId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '²ËÆ·Ä£°åÖ÷¼ü±àºÅ',
-  `foodItemTemplateName` varchar(20) NOT NULL COMMENT '²ËÆ·Ä£°åÃû³Æ',
-  `createdAt` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP()  COMMENT '´´½¨Ê±¼ä',
-  `isDeleted` bit(1) NOT NULL  DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`foodItemTemplateId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of FoodItemTemplate
--- ----------------------------
-
--- ----------------------------
--- Table structure for Log
--- ÏµÍ³ÈÕÖ¾±í
--- ËµÃ÷£º1Ö÷Òª¼ÇÂ¼  ºóÌ¨Ô±¹¤µÄ²Ù×÷¼ÇÂ¼£¬¶ÔÏµÍ³ÄÄĞ©°å¿é½øĞĞÁË Ê²Ã´ÑùµÄ²Ù×÷¡£
---  2 ÔËĞĞÊ± ÏµÍ³ÖĞ³öÏÖµÄ´íÎó£¬²¢¿É»¹Ô­ ÊÇÓÉ ÉÌ¼Ò/ÓÃ»§ ½øĞĞÁË Ê²Ã´²Ù×÷¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Log`;
-CREATE TABLE `Log` (
-  `logId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT  'ÈÕÖ¾Ö÷¼üid',
-  `logType` int(11) NOT NULL COMMENT 'ÈÕÖ¾ÀàĞÍ',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT  '´´½¨Ê±¼ä',
-  `logContent` varchar(255) NOT NULL COMMENT 'ÈÕÖ¾ÄÚÈİ',
-  `peopleType` int(11) NOT NULL DEFAULT -1 COMMENT '²Ù×÷ÀàĞÍ£¨ÉÌ¼Ò£¬ÓÃ»§£¬Ô±¹¤£©',
-  `peopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT '²Ù×÷ÈËid£¨ÉÌ¼Ò£¬ÓÃ»§£¬Ô±¹¤£©',
+DROP TABLE IF EXISTS `log`;
+CREATE TABLE `log`  (
+  `logId` bigint(20) NOT NULL COMMENT 'æ—¥å¿—ä¸»é”®id',
+  `logType` int(11) NOT NULL DEFAULT -1 COMMENT 'æ—¥å¿—ç±»å‹',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `logContent` varchar(255) NOT NULL DEFAULT '' COMMENT 'æ—¥å¿—å†…å®¹',
+  `peopleType` int(11) NOT NULL DEFAULT -1 COMMENT 'æ“ä½œç±»å‹ï¼ˆå•†å®¶ï¼Œç”¨æˆ·ï¼Œå‘˜å·¥ï¼‰',
+  `peopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'æ“ä½œäººidï¼ˆå•†å®¶ï¼Œç”¨æˆ·ï¼Œå‘˜å·¥ï¼‰',
   `ip` varchar(20) NOT NULL DEFAULT '',
-  `isRepair` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñ½â¾ö´íÎó',
-  `repairConten` varchar(255) NOT NULL DEFAULT '' COMMENT '½â¾ö²Ù×÷',
-  PRIMARY KEY (`logId`)
+  PRIMARY KEY (`logId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Log
+-- Table structure for message
 -- ----------------------------
-
-
-
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message`  (
+  `messageId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'æ¶ˆæ¯ä¸»é”®id',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å•†å®¶ä¸»é”®id',
+  `customId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  PRIMARY KEY (`messageId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ----------------------------
--- Table structure for Message
--- ÏûÏ¢±í
--- ËµÃ÷£ºÏûÏ¢Ö÷ÒªĞÅÏ¢¡£Ö÷Òª¼ÇÂ¼£¬ÏûÏ¢ÀàĞÍ ÊÇÆÕÍ¨ÏûÏ¢»¹ÊÇÏµÍ³ÏûÏ¢£¬
--- ²ÎÓëµÄÈËÔ±£¬¿ÉÒÔÊÇ ÉÌ¼ÒºÍÏµÍ³  ÓÃ»§ºÍÏµÍ³  ÉÌ¼ÒºÍÓÃ»§¡£
+-- Table structure for messagedetail
 -- ----------------------------
-DROP TABLE IF EXISTS `Message`;
-CREATE TABLE `Message` (
-  `messageId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÏûÏ¢Ö÷¼üid',
-  `storeId` bigint(20) NOT NULL COMMENT 'ÉÌ¼ÒÖ÷¼üid',
-  `customId` bigint(20) NOT NULL COMMENT 'ÓÃ»§Ö÷¼üid',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  PRIMARY KEY (`messageId`)
+DROP TABLE IF EXISTS `messagedetail`;
+CREATE TABLE `messagedetail`  (
+  `messageDetailId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'æ¶ˆæ¯è¯¦ç»†å†…å®¹è¡¨ä¸»é”®id',
+  `messageId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'èŠå¤©ä¸»ä½“id',
+  `sendPeopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å‘é€æ¶ˆæ¯äººä¸»é”®id',
+  `sendPeopleType` int(11) NOT NULL DEFAULT -1 COMMENT 'æ¶ˆæ¯å‘é€äººç±»å‹',
+  `sendIsRead` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ¶ˆæ¯å‘é€äººæ˜¯å¦é˜…è¯»',
+  `receivePeopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'æ¥å—æ¶ˆæ¯äººä¸»é”®id',
+  `receivePeopleType` int(11) NOT NULL DEFAULT -1 COMMENT 'æ¶ˆæ¯æ¥å—äººç±»å‹',
+  `receiveIsRead` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ¶ˆæ¯æ¥å—äººæ˜¯å¦é˜…è¯»',
+  `messageContent` varchar(255) NOT NULL DEFAULT '' COMMENT 'èŠå¤©å†…å®¹',
+  `sendTime` datetime NOT NULL COMMENT 'å‘é€æ—¶é—´',
+  PRIMARY KEY (`messageDetailId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Message
+-- Table structure for operatingsetting
 -- ----------------------------
-
--- ----------------------------
--- Table structure for MessageDetail
--- ÏûÏ¢ÏêÏ¸ÄÚÈİ±í
--- ËµÃ÷£º´Ë±íÖ÷Òª¶ÔÓ¦ ÏûÏ¢±íMessage £¬¼ÇÂ¼Ã¿¸öÏûÏ¢ÖĞµÄÁÄÌìÄÚÈİ
---  Ö÷ÒªÄÚÈİÓÉ ·¢ËÍÓÃ»§ÀàĞÍ£¬ ¸ù¾İÓÃ»§ÀàĞÍ¡£
--- ----------------------------
-DROP TABLE IF EXISTS `MessageDetail`;
-CREATE TABLE `MessageDetail` (
-  `messageDetailId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÏûÏ¢ÏêÏ¸ÄÚÈİ±íÖ÷¼üid',
-  `messageId` bigint(20) NOT NULL COMMENT 'ÁÄÌìÖ÷Ìåid',
-  `sendPeopleId` bigint(20) NOT NULL  COMMENT '·¢ËÍÏûÏ¢ÈËÖ÷¼üid',
-  `sendPeopleType` int(11) NOT NULL COMMENT 'ÏûÏ¢·¢ËÍÈËÀàĞÍ',
-  `sendIsRead` bit NOT NULL DEFAULT TRUE COMMENT 'ÏûÏ¢·¢ËÍÈËÊÇ·ñÔÄ¶Á',
-  `receivePeopleId` bigint(20) NOT NULL  COMMENT '½ÓÊÜÏûÏ¢ÈËÖ÷¼üid',
-  `receivePeopleType` int(11) NOT NULL COMMENT 'ÏûÏ¢½ÓÊÜÈËÀàĞÍ',
-  `receiveIsRead` bit NOT NULL DEFAULT FALSE COMMENT 'ÏûÏ¢½ÓÊÜÈËÊÇ·ñÔÄ¶Á',
-  `messageContent` varchar(255) NOT NULL COMMENT 'ÁÄÌìÄÚÈİ',
-  `sendTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '·¢ËÍÊ±¼ä',
-  PRIMARY KEY (`messageDetailId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------  
--- Records of MessageDetail
--- ----------------------------
-
-
-
--- ----------------------------
--- Table structure for OperatingSetting 
--- µêÆÌÃ¿ÈÕÓªÔËĞÅÏ¢±í
--- ËµÃ÷£º´Ë±íÖ÷Òª¹ÜÀí ÉÌ¼ÒµÄ ÓªÔË²ËÆ· ºÍÓªÔËÈÕÆÚ¡£Ã¿¸öÉÌ¼ÒÔÚÉÌ¼Ò¹ÜÀíºóÌ¨Éè¶¨
--- Éè¼ÆÄ¿µÄ£º ¼ÇÂ¼ ÉÌ»§Éè¶¨ ÓªÔËÈÕÆÚ£¬ ºÍ¹ØÁªµÄ²ËÆ·Ä£°åÄ£°åid
--- Ã¿ÈÕÓªÔËĞÅÏ¢£¬¹ØÁª ²ËÆ·Ä£°åid FoodItemtemplate¡£
--- ----------------------------
-DROP TABLE IF EXISTS `OperatingSetting`;
-CREATE TABLE `OperatingSetting` (
-  `storeId` bigint(20) NOT NULL COMMENT 'µêÆÌid',
-  `date` datetime NOT NULL COMMENT 'ÓªÔËÈÕÆÚ',
-  `currentFoodItemTemplateId` bigint(20) NOT NULL COMMENT '²ËÆ·Ä£°å±íÖ÷¼üid',
-  PRIMARY KEY (`storeId`,`date`)
+DROP TABLE IF EXISTS `operatingsetting`;
+CREATE TABLE `operatingsetting`  (
+  `storeId` bigint(20) NOT NULL COMMENT 'åº—é“ºid',
+  `date` datetime NOT NULL COMMENT 'è¥è¿æ—¥æœŸ',
+  `currentFoodItemTemplateId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'èœå“æ¨¡æ¿è¡¨ä¸»é”®id',
+  PRIMARY KEY (`storeId`, `date`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of OperatingSetting 
+-- Table structure for orderandfooditemcomboassociation
 -- ----------------------------
-
--- ----------------------------
--- Table structure for Order
--- ¶©µ¥±í
--- ËµÃ÷£ºÖ÷Òª¼ÇÂ¼ÓÃÏÂµ¥Éú³ÉµÄ¶©µ¥£¬Ïû·Ñ ×´Ì¬£¬½»Ò×Ë«·½¡£
--- Ò²¿ÉÓÃÉÌ¼ÒÊÕÒæ£¬Æ½Ì¨ÊÕÒæÍ³¼Æ¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Order`;
-CREATE TABLE `Order` (
-  `orderId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '¶©µ¥Ö÷¼ü±àºÅ',
-  `uuId` varchar(20) NOT NULL COMMENT '¿ÉÕ¹Ê¾¶©µ¥±àºÅ',
-  `addressId` bigint(20) NOT NULL COMMENT 'ËÍ²ÍµØÖ·±àºÅ',
-  `storeId` bigint(20) NOT NULL COMMENT 'µêÆÌ±àºÅ',
-  `customerId` bigint(20) NOT NULL COMMENT 'ÓÃ»§±àºÅ',
-  `deliveryDate` datetime  NOT NULL COMMENT 'Ñ¡ÔñµÄËÍ²ÍÈÕÆÚ',
-  `deliveryTime` int(11)  NOT NULL COMMENT '0 Îç²Í 1Íí²Í',
-  `createdAt` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT 'ÏÂµ¥Ê±¼ä',
-  `lastUpdatedAt` datetime  NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '×îºóĞŞ¸ÄÊ±¼ä',
-  `deliveredTime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'ËÍ´ïÊ±¼ä',
-  `refundTime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'ÍËµ¥Ê±¼ä',
-  `totalAmount` decimal(10,2) NOT NULL COMMENT '×Ü½ğ¶î',
-  `subTotal` decimal(10,2) NOT NULL COMMENT '²ËÆ·½ğ¶î×Ü¼Æ',
-  `taxes` decimal(10,2) NOT NULL COMMENT 'Ë°ÊÕ',
-  `tip` decimal(10,2) NOT NULL DEFAULT 0 COMMENT 'Ğ¡·Ñ',
-  `remark` varchar(255) NOT NULL COMMENT '±¸×¢',
-  `refundReason` varchar(255) NOT NULL DEFAULT ''  COMMENT 'ÍË¿îÔ­Òò',
-  `state` int(11) NOT NULL COMMENT '×´Ì¬  0-Ô¤¶©µ¥£¨ÏÂµ¥Õ¹Ê¾Ò³£© 1-½øĞĞÖĞ  2ÒÑËÍ´ï  3ÒÑÍê³É£¨»òÕß´øÆÀ¼Û£© 4ÒÑÍê³É 5ÉêÇëÍË¿îÖĞ 6 ÒÑÍË¿î ',
-  `zhangPeriod` int(11) NOT NULL  DEFAULT 0 COMMENT 'ÕËÆÚ×´Ì¬£¨0 Îªµ½ÕË£¬1 ÒÑµ½ÕË£©',
-  `storeIsDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÉÌ¼ÒÊÇ·ñÉ¾³ı',
-  `customerIsDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÓÃ»§ÊÇ·ñÉ¾³ı',
-  `customerIsRead` int(11) NOT NULL DEFAULT FALSE COMMENT 'ÓÃ»§ÊÇ·ñÔÄ¶Á',
-  `storeIsRead` int(11) NOT NULL DEFAULT FALSE COMMENT 'ÉÌ¼ÒÊÇ·ñÔÄ¶Á',
-  `storeEarnings` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'ÉÌ¼ÒÊÕÒæ=²ËÆ·½ğ¶î*£¨1-µ±Ç°µÄÏµÍ³³é³É±ÈÀı£©',
-  `platformEarnings` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Æ½Ì¨ÊÕÒæ=²ËÆ·½ğ¶î×Ü¼Æ*µ±Ç°µÄÏµÍ³³é³É±ÈÀı',
-  `proportional` decimal(10,2) NOT NULL  DEFAULT 0.00 COMMENT 'ÏµÍ³³é³É±ÈÀı',
-  PRIMARY KEY (`orderId`,`uuId`)
+DROP TABLE IF EXISTS `orderandfooditemcomboassociation`;
+CREATE TABLE `orderandfooditemcomboassociation`  (
+  `orderId` bigint(20) NOT NULL COMMENT 'è®¢å•ä¸»é”®ç¼–å·',
+  `comboId` int(11) NOT NULL COMMENT 'å¥—é¤ç¼–å·',
+  `foodItemId` int(11) NOT NULL COMMENT 'å¥—é¤ç¼–å·',
+  `foodItemCount` int(11) NOT NULL DEFAULT 0 COMMENT 'èœå“æ•°é‡',
+  `comboTemplateCount` int(11) NOT NULL DEFAULT 0 COMMENT 'å¥—é¤æ•°é‡',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`orderId`, `comboId`, `foodItemId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Order
+-- Table structure for orderform
 -- ----------------------------
-
--- ----------------------------
--- Table structure for OrderAndFoodItemComboAssociation
--- ¶©µ¥¹ØÁª ÉÌÆ· ºÍÌ×²Í±í 
--- ----------------------------
-DROP TABLE IF EXISTS `OrderAndFoodItemComboAssociation`;
-CREATE TABLE `OrderAndFoodItemComboAssociation` (
-  `orderId` bigint(20) NOT NULL  COMMENT '¶©µ¥Ö÷¼ü±àºÅ',
-  `comboId` bigint(11) NOT NULL DEFAULT -1 COMMENT 'Ì×²Í±àºÅ',
-  `foodItemId` bigint(11) NOT NULL DEFAULT -1 COMMENT 'Ì×²Í±àºÅ',
-  `foodItemCount` int(11) NOT NULL DEFAULT 0 COMMENT '²ËÆ·ÊıÁ¿',
-  `comboTemplateCount` int(11) NOT NULL DEFAULT 0 COMMENT 'Ì×²ÍÊıÁ¿',
-  `isDeleted` bit(1) NOT NULL COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`orderId`,`comboId`,`foodItemId`)	
+DROP TABLE IF EXISTS `orderform`;
+CREATE TABLE `orderform`  (
+  `orderId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'è®¢å•ä¸»é”®ç¼–å·',
+  `uuId` varchar(20) NOT NULL DEFAULT '' COMMENT 'å¯å±•ç¤ºè®¢å•ç¼–å·',
+  `addressId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'é€é¤åœ°å€ç¼–å·',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'åº—é“ºç¼–å·',
+  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ç¼–å·',
+  `deliveryDate` datetime NOT NULL COMMENT 'é€‰æ‹©çš„é€é¤æ—¥æœŸ',
+  `deliveryTime` int(11) NOT NULL DEFAULT -1 COMMENT '0 åˆé¤ 1æ™šé¤',
+  `createdAt` datetime NOT NULL COMMENT 'ä¸‹å•æ—¶é—´',
+  `lastUpdatedAt` datetime NOT NULL COMMENT 'æœ€åä¿®æ”¹æ—¶é—´',
+  `deliveredTime` datetime NOT NULL COMMENT 'é€è¾¾æ—¶é—´',
+  `refundTime` datetime NOT NULL COMMENT 'é€€å•æ—¶é—´',
+  `totalAmount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT 'æ€»é‡‘é¢',
+  `subTotal` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT 'èœå“é‡‘é¢æ€»è®¡',
+  `taxes` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT 'ç¨æ”¶',
+  `tip` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT 'æ¶ˆè´¹',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT 'å¤‡æ³¨',
+  `refundReason` varchar(255) NOT NULL DEFAULT '' COMMENT 'é€€æ¬¾åŸå› ',
+  `state` int(11) NOT NULL DEFAULT 0 COMMENT 'çŠ¶æ€  0-é¢„è®¢å•ï¼ˆä¸‹å•å±•ç¤ºé¡µï¼‰ 1-è¿›è¡Œä¸­  2å·²é€è¾¾  3å·²å®Œæˆï¼ˆæˆ–è€…å¸¦è¯„ä»·ï¼‰ 4å·²å®Œæˆ 5ç”³è¯·é€€æ¬¾ä¸­ 6 å·²é€€æ¬¾ ',
+  `zhangPeriod` int(11) NOT NULL DEFAULT 0 COMMENT 'è´¦æœŸçŠ¶æ€ï¼ˆ0 ä¸ºåˆ°è´¦ï¼Œ1 å·²åˆ°è´¦ï¼‰',
+  `storeIsDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'å•†å®¶æ˜¯å¦åˆ é™¤',
+  `customerIsDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'ç”¨æˆ·æ˜¯å¦åˆ é™¤',
+  `customerIsRead` bit(1) NOT NULL DEFAULT b'0' COMMENT 'ç”¨æˆ·æ˜¯å¦é˜…è¯»',
+  `storeIsRead` bit(1) NOT NULL DEFAULT b'0' COMMENT 'å•†å®¶æ˜¯å¦é˜…è¯»',
+  `storeEarnings` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'å•†å®¶æ”¶ç›Š=èœå“é‡‘é¢*ï¼ˆ1-å½“å‰çš„ç³»ç»ŸæŠ½æˆæ¯”ä¾‹ï¼‰',
+  `platformEarnings` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'å¹³å°æ”¶ç›Š=èœå“é‡‘é¢æ€»è®¡*å½“å‰çš„ç³»ç»ŸæŠ½æˆæ¯”ä¾‹',
+  `proportional` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'ç³»ç»ŸæŠ½æˆæ¯”ä¾‹',
+  PRIMARY KEY (`orderId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of OrderAndFoodItemComboAssociation
+-- Table structure for picture
 -- ----------------------------
-
-
+DROP TABLE IF EXISTS `picture`;
+CREATE TABLE `picture`  (
+  `pictureId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'å›¾ç‰‡ä¸»é”®',
+  `pictureUrl` varchar(5000) NOT NULL DEFAULT '' COMMENT 'å›¾ç‰‡å­˜æ”¾åœ°å€',
+  PRIMARY KEY (`pictureId`) 
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for Picture
--- Í¼Æ¬±í
--- ËµÃ÷£º¼ÇÂ¼ÓÃ»§ÉÏ´«µÄÍ¼Æ¬£¬ºÍÍ¼Æ¬Ëù´æ·ÅµÄÁ´½Ó
+-- Table structure for platform
 -- ----------------------------
-DROP TABLE IF EXISTS `Picture`;
-CREATE TABLE `Picture` (
-  `pictureId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Í¼Æ¬Ö÷¼ü',
-  `pictureUrl` varchar(50) NOT NULL COMMENT 'Í¼Æ¬´æ·ÅµØÖ·',
-  PRIMARY KEY (`pictureId`)
+DROP TABLE IF EXISTS `platform`;
+CREATE TABLE `platform`  (
+  `platformId` decimal(10, 0) NOT NULL COMMENT 'å¹³å°ä¿¡æ¯è¡¨ä¸»é”®',
+  `totalMoney` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'å¹³å°ç°æœ‰æ€»èµ„é‡‘',
+  `toatalEarnings` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'å¹³å°æ€»è®¡æ”¶ç›Š',
+  `lunchStartTime` time NOT NULL COMMENT 'ç³»ç»Ÿè®¾ç½® åˆé¤ é…é€èµ·å§‹æ—¶é—´',
+  `lunchEndTime` time NOT NULL COMMENT 'ç³»ç»Ÿè®¾ç½® åˆé¤ é…é€ç»“æŸæ—¶é—´',
+  `dinnerStartTime` time NOT NULL COMMENT 'ç³»ç»Ÿè®¾ç½® æ™šé¤ é…é€èµ·å§‹æ—¶é—´',
+  `dinnerEndTime` time NOT NULL COMMENT 'ç³»ç»Ÿè®¾ç½® æ™šé¤é…é€ç»“æŸæ—¶é—´',
+  PRIMARY KEY (`platformId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Picture
+-- Table structure for review
 -- ----------------------------
-
--- ----------------------------
--- Table structure for Platform
---  Æ½Ì¨ĞÅÏ¢±í
--- ¼ÇÂ¼Æ½Ì¨µÄ»ù±¾ĞÅÏ¢ºÍÅäÖÃĞÅÏ¢£¬
--- ----------------------------
-DROP TABLE IF EXISTS `Platform`;
-CREATE TABLE `Platform` (
-  `platformId` decimal(10,0) NOT NULL COMMENT 'Æ½Ì¨ĞÅÏ¢±íÖ÷¼ü',
-  `totalMoney` decimal(10,0) NOT NULL COMMENT 'Æ½Ì¨ÏÖÓĞ×Ü×Ê½ğ',
-  `toatalEarnings` decimal(10,0) NOT NULL COMMENT 'Æ½Ì¨×Ü¼ÆÊÕÒæ',
-  `lunchStartTime` time NOT NULL  COMMENT 'ÏµÍ³ÉèÖÃ Îç²Í ÅäËÍÆğÊ¼Ê±¼ä' ,
-  `lunchEndTime` time NOT NULL  COMMENT 'ÏµÍ³ÉèÖÃ Îç²Í ÅäËÍ½áÊøÊ±¼ä',
-  `dinnerStartTime` time NOT NULL  COMMENT 'ÏµÍ³ÉèÖÃ Íí²Í ÅäËÍÆğÊ¼Ê±¼ä',
-  `dinnerEndTime` time NOT NULL  COMMENT 'ÏµÍ³ÉèÖÃ Íí²ÍÅäËÍ½áÊøÊ±¼ä',
-PRIMARY KEY (`platformId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of Platform
--- ----------------------------
--- ----------------------------
--- Table structure for Review
--- ÆÀ¼Û±í
--- µ±¶©µ¥Íê³ÉÊ±£¬ÓÃ»§¿É¶Ô ¶©µ¥(Êµ¼ÊÉÏÊÇ¶ÔµêÆÌ)½øĞĞÆÀ¼Û¡£
--- Èç¹ûÓÃ»§²»½øĞĞÆÀ¼Û£¬µ±¶©µ¥Íê³Éºó3ÌìÄÚ ×Ô¶¯½øĞĞºÃÆÀ¡£
--- µ±²é¿´µêÆÌÆÀ¼ÛÊ±,¸ù¾İÊÇ·ñÓĞÆÀ¼ÛÄÚÈİ½øĞĞÕ¹Ê¾£¬£¨Ö»Õ¹Ê¾ÓĞ ÆÀ¼ÛÄÚÈİµÄĞÅÏ¢ Í¼Æ¬Ò²Ëã£¬£©
--- ----------------------------
-DROP TABLE IF EXISTS `Review`;
-CREATE TABLE `Review` (
-  `reviewId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÆÀÂÛ Ö÷¼ü±àºÅ',
-  `tasteScore` double NOT NULL DEFAULT 5 COMMENT 'Î¶µÀÆÀ·Ö',
-  `serviceScore` double NOT NULL DEFAULT 5 COMMENT '·şÎñÆÀ·Ö',
-  `weightScore` double NOT NULL DEFAULT 5 COMMENT '·ÖÁ¿ÆÀ·Ö',
-  `avgScore` double NOT NULL DEFAULT 5 COMMENT '×ÛºÏÆÀ·Ö',
-  `scoreContent` varchar(255) NOT NULL DEFAULT '' COMMENT 'ÆÀ·ÖÄÚÈİ  '' ±êÊ¾Ã»ÓĞÆÀ¼ÛÄÚÈİ',
-  `customerId` bigint(20) NOT NULL COMMENT 'ÓÃ»§±àºÅ',
-  `orderId` bigint(20) NOT NULL COMMENT 'µãµ¥±àºÅ',
-  `storeId` bigint(20) NOT NULL COMMENT 'µêÆÌ±àºÅ',
-  `reviewTime` datetime NOT NULL COMMENT 'ÆÀ¼ÛÊ±¼ä',
-  `isAutoReview` bit(1) NOT NULL DEFAULT TRUE  COMMENT 'ÊÇ·ñ×Ô¶¯ÆÀ¼Û',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`reviewId`)
+DROP TABLE IF EXISTS `review`;
+CREATE TABLE `review`  (
+  `reviewId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'è¯„è®º ä¸»é”®ç¼–å·',
+  `tasteScore` double NOT NULL DEFAULT 0 COMMENT 'å‘³é“è¯„åˆ†',
+  `serviceScore` double NOT NULL DEFAULT 0 COMMENT 'æœåŠ¡è¯„åˆ†',
+  `weightScore` double NOT NULL DEFAULT 0 COMMENT 'åˆ†é‡è¯„åˆ†',
+  `avgScore` double NOT NULL DEFAULT 0 COMMENT 'ç»¼åˆè¯„åˆ†',
+  `scoreContent` varchar(255) NOT NULL DEFAULT '' COMMENT 'è¯„åˆ†å†…å®¹  å¦‚æœæœªnull æ ‡ç¤ºæ²¡æœ‰è¯„ä»·å†…å®¹',
+  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ç¼–å·',
+  `orderId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç‚¹å•ç¼–å·',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'åº—é“ºç¼–å·',
+  `reviewTime` datetime NOT NULL COMMENT 'è¯„ä»·æ—¶é—´',
+  `isAutoReview` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦è‡ªåŠ¨è¯„ä»·',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`reviewId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Review
+-- Table structure for reviewpictureassociation
 -- ----------------------------
-
-
+DROP TABLE IF EXISTS `reviewpictureassociation`;
+CREATE TABLE `reviewpictureassociation`  (
+  `reviewId` bigint(20) NOT NULL COMMENT 'è¯„è®ºä¸»é”®ç¼–å·',
+  `pictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å›¾ç‰‡ä¸»é”®',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`reviewId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ----------------------------
--- Table structure for ReviewPictureAssociation
--- ÆÀ¼Û-Í¼Æ¬¹ØÁª±í
+-- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS `ReviewPictureAssociation`;
-CREATE TABLE `ReviewPictureAssociation` (
-  `reviewId` bigint(20) NOT NULL  COMMENT 'ÆÀÂÛÖ÷¼ü±àºÅ',
-  `pictureId` bigint(20) NOT NULL  COMMENT 'Í¼Æ¬Ö÷¼ü',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`reviewId`)
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role`  (
+  `roleId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'è§’è‰²ä¸»é”®id',
+  `roleName` varchar(255) NOT NULL DEFAULT '' COMMENT 'è§’è‰²åç§°',
+  `roleContent` varchar(255) NOT NULL DEFAULT '' COMMENT 'åŒ…å«çš„æƒé™',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  PRIMARY KEY (`roleId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of ReviewPictureAssociation
+-- Table structure for salessetting
 -- ----------------------------
+DROP TABLE IF EXISTS `salessetting`;
+CREATE TABLE `salessetting`  (
+  `storeId` bigint(20) NOT NULL COMMENT 'å•†å®¶id',
+  `lunchRefundInterval` time NOT NULL COMMENT 'åˆé¤æ— æ¡ä»¶é€€æ¬¾æ—¶é—´',
+  `dinnerRefundInterval` time NOT NULL COMMENT 'æ™šé¤æ— æ¡ä»¶é€€æ¬¾æ—¶é—´',
+  `lunchOrderendTime` time NOT NULL COMMENT 'åˆé¤æˆªæ­¢ä¸‹å•æ—¶é—´',
+  `dinnerOrderendTime` time NOT NULL COMMENT 'æ™šé¤æˆªæ­¢ä¸‹å•æ—¶é—´',
+  `isHaveLunch` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦å¼€æ”¾åˆé¤',
+  `isHaveDinner` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦å¼€æ”¾æ™šé¤',
+  `pictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å°é¢å›¾ç‰‡id',
+  PRIMARY KEY (`storeId`) 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for Role
--- ½ÇÉ«±í
--- ¼ÇÂ¼ÏµÍ³ÖĞ Ô±¹¤ Ëù¾ß±¸µÄ²Ù×÷È¨ÏŞ¡£
---  ÏµÍ³¸ù¾İ ²Ù×÷È¨ÏŞ£¬¹ÜÀí Ô±¹¤ ¿ÉÖ´ĞĞµÄ²Ù×÷¡£  
+-- Table structure for shoppingcart
 -- ----------------------------
-DROP TABLE IF EXISTS `Role`;
-CREATE TABLE `Role` (
-  `roleId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '½ÇÉ«Ö÷¼üid',
-  `roleName` varchar(255) NOT NULL COMMENT '½ÇÉ«Ãû³Æ',
-  `roleContent` varchar(255) NOT NULL COMMENT '°üº¬µÄÈ¨ÏŞ',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  PRIMARY KEY (`roleId`)
+DROP TABLE IF EXISTS `shoppingcart`;
+CREATE TABLE `shoppingcart`  (
+  `shoppingCartId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®id',
+  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ç¼–å·',
+  PRIMARY KEY (`shoppingCartId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Role
+-- Table structure for shoppingcartlineitem
 -- ----------------------------
-
-
-
-
--- ----------------------------
--- Table structure for SalesSetting
--- µêÆÌĞÅÏ¢±í
--- ¼ÇÂ¼µêÆÌ»ù±¾ĞÅÏ¢ ºÍÏµÍ³ÉèÖÃĞÅÏ¢£¬ÏµÍ³ÆÀ·ÖÓÉÏµÍ³¸ù¾İÆÀ¼Û×Ô¶¯ÆÀ¶¨£¬
--- Èç¹û¿ª·¢ Îç²Í£¬Îç²ÍËÍ²ÍÊ±¼ä£¬Ä¬ÈÏÎªÏµÍ³ËÍ²ÍÊ±¼ä£¬Èç¹û¿ª·ÅÍí²Í Ä¬ÈÏÎªÏµÍ³Íí²ÍËÍ²ÍÊ±¼ä£¬
--- ÎŞÌõ¼ş ÍË¿îÊ±¼ä ¿ÉÒÔ ËæÒâĞŞ¸Ä£¬½ØÖÁÏÂµ¥Ê±¼ä¿ÉÒÔËæÊ±ĞŞ¸Ä¡£
--- ----------------------------
-DROP TABLE IF EXISTS `SalesSetting`;
-CREATE TABLE `SalesSetting` (
-  `storeId` bigint(20) NOT NULL  COMMENT 'ÉÌ¼Òid',
-  `lunchRefundInterval` time NOT NULL COMMENT 'Îç²ÍÎŞÌõ¼şÍË¿îÊ±¼ä',
-  `dinnerRefundInterval` time NOT NULL COMMENT 'Íí²ÍÎŞÌõ¼şÍË¿îÊ±¼ä',
-  `lunchOrderendTime` time NOT NULL COMMENT 'Îç²Í½ØÖ¹ÏÂµ¥Ê±¼ä',
-  `dinnerOrderendTime` time NOT NULL COMMENT 'Íí²Í½ØÖ¹ÏÂµ¥Ê±¼ä',
-  `isHaveLunch` bit(1) NOT NULL DEFAULT FALSE  COMMENT 'ÊÇ·ñ¿ª·ÅÎç²Í',
-  `isHaveDinner` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñ¿ª·ÅÍí²Í',
-  `pictureId` bigint(20) NOT NULL DEFAULT -1 COMMENT '·âÃæÍ¼Æ¬id',
-  PRIMARY KEY (`storeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of SalesSetting
--- ----------------------------
--- ----------------------------
--- Table structure for ShoppingCart
--- ¹ºÎï³µ±í
--- shoppingcartid ºÍ customerid Ò»Ò»¶ÔÓ¦  ,Ã¿¸öÓÃ»§¶ÔÓ¦Ò»¸ö¹ºÎï³µ
--- ----------------------------
-DROP TABLE IF EXISTS `ShoppingCart`;
-CREATE TABLE `ShoppingCart` (
-  `shoppingCartId` bigint(20) NOT NULL AUTO_INCREMENT  COMMENT 'Ö÷¼üid',
-  `customerId` bigint(20) NOT NULL COMMENT 'ÓÃ»§±àºÅ',
-  PRIMARY KEY (`shoppingCartId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of ShoppingCart
--- ----------------------------
--- ----------------------------
--- Table structure for ShoppingCartLineItem
--- ¹ºÎï³µ·Ö¸î±íÓÃÓÚ¼ÇÂ¼ÓÃ»§¶ÔÄÄĞ©Ê±¼ä ÄÄĞ©ÉÌ¼Ò Ìí¼Óµ½ÁË¹ºÎï³µ
--- ----------------------------
-DROP TABLE IF EXISTS `ShoppingCartLineItem`;
-CREATE TABLE `ShoppingCartLineItem` (
-  `shoppingCartLineItemId` bigint(20) NOT NULL AUTO_INCREMENT  COMMENT 'Ö÷¼üid',
-  `shoppingCartId` bigint(20) NOT NULL   COMMENT '¹ºÎï³µ±íÖ÷¼üid',
-  `storeId` bigint(20) NOT NULL COMMENT 'Ì×²Í±àºÅ',
-  `deliveryDate` datetime NOT NULL COMMENT 'Ñ¡ÔñµÄËÍ²ÍÈÕÆÚ',
-  `deliveryTime` int(11) NOT NULL COMMENT 'Ñ¡ÔñµÄËÍ²ÍÊ±¼ä 0 Îç²Í 1Íí²Í',
+DROP TABLE IF EXISTS `shoppingcartlineitem`;
+CREATE TABLE `shoppingcartlineitem`  (
+  `shoppingCartLineItemId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®id',
+  `shoppingCartId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'è´­ç‰©è½¦è¡¨ä¸»é”®id',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å¥—é¤ç¼–å·',
+  `deliveryDate` datetime NOT NULL COMMENT 'é€‰æ‹©çš„é€é¤æ—¥æœŸ',
+  `deliveryTime` int(11) NOT NULL DEFAULT 0 COMMENT 'é€‰æ‹©çš„é€é¤æ—¶é—´ 0 åˆé¤ 1æ™šé¤',
   `state` int(11) NOT NULL DEFAULT 0 COMMENT ' 0:in_cart,1:ordered,2:deleted',
-  `comboId` bigint(20) NOT NULL   COMMENT 'Combo±íÖ÷¼üid',
-  `comboCount` bigint(20) NOT NULL DEFAULT -1  COMMENT 'Ì×²ÍÊıÁ¿',
-  `foodItemId` bigint(20) NOT NULL DEFAULT -1  COMMENT '²ËÆ·±íÖ÷¼ü±àºÅ',
-  `foodItemCount` int(11) NOT NULL COMMENT '²ËÆ··İÊı',
-  `createdAt` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  `updatedAt` datetime  NOT NULL DEFAULT '0000-00-00 00:00:0011' COMMENT 'ĞŞ¸ÄÊ±¼ä',
-   PRIMARY KEY (`shoppingCartLineItemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of ShoppingCartLineItem
--- ----------------------------
--- ----------------------------
--- Table structure for Store
--- µêÆÌĞÅÏ¢±í
--- ¼ÇÂ¼µêÆÌ»ù±¾ĞÅÏ¢ ºÍÏµÍ³ÉèÖÃĞÅÏ¢£¬ÏµÍ³ÆÀ·ÖÓÉÏµÍ³¸ù¾İÆÀ¼Û×Ô¶¯ÆÀ¶¨£¬
--- Èç¹û¿ª·¢ Îç²Í£¬Îç²ÍËÍ²ÍÊ±¼ä£¬Ä¬ÈÏÎªÏµÍ³ËÍ²ÍÊ±¼ä£¬Èç¹û¿ª·ÅÍí²Í Ä¬ÈÏÎªÏµÍ³Íí²ÍËÍ²ÍÊ±¼ä£¬
--- ÎŞÌõ¼ş ÍË¿îÊ±¼ä ¿ÉÒÔ ËæÒâĞŞ¸Ä£¬½ØÖÁÏÂµ¥Ê±¼ä¿ÉÒÔËæÊ±ĞŞ¸Ä¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Store`;
-CREATE TABLE `Store` (
-  `storeId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÉÌ¼Òid',
-  `phoneNumber` varchar(25) NOT NULL COMMENT 'µç»°ºÅÂë',
-  `email` varchar(25) NOT NULL COMMENT 'ÓÊÏä',
-  `wechatOpenid` varchar(25) NOT NULL COMMENT 'Î¢ĞÅid',
-  `phoneNumberIsValidated` varchar(25) NOT NULL COMMENT 'µç»°ºÅÂë',
-  `emailIsValidated` varchar(25) NOT NULL COMMENT 'ÓÊÏä',
-  `wechatOpenidIsValidated` varchar(25) NOT NULL COMMENT 'Î¢ĞÅid',
-  `nickName` varchar(255) NOT NULL DEFAULT '' COMMENT 'êÇ³Æ',
-  `firstName` varchar(50) NOT NULL DEFAULT '' COMMENT 'Ãû',
-  `lastName` varchar(50) NOT NULL DEFAULT '' COMMENT 'ĞÕ',
-  `sex` varchar(255) NOT NULL DEFAULT '' COMMENT 'ĞÔ±ğ',
-  `balance` decimal(10,0) NOT NULL DEFAULT 0.00  COMMENT 'Óà¶î',
-  `storeName` varchar(50) NOT NULL COMMENT 'µêÆÌÃû³Æ',
-  `averageScore` double NOT NULL DEFAULT 0 COMMENT '×ÛºÏÆÀ·Ö',
-  `star` int(11) NOT NULL  DEFAULT 0 COMMENT  'ĞÇ¼¶',
-  `introduction` varchar(50) NOT NULL DEFAULT '' COMMENT '¼ò½é',
-  `businessAddress` varchar(50) NOT NULL DEFAULT '' COMMENT 'µêÆÌµØÖ· ÕæÊµµØÖ·',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`storeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of Store
--- ----------------------------
--- ----------------------------
--- Table structure for StoreAddressAssociation
--- µêÆÌ-µØÖ·¹ØÁª±í ¹ØÏµ ²ÉÓÃ ¶à¶Ô¶à
--- Ò»¸öµØÖ·¿ÉÒÔ¶ÔÓ¦¶à¸öµêÆÌ£¬Ò»¸öµêÆÌ¿ÉÒÔ¶ÔÓ¦¶à¸öµØÖ·
--- ----------------------------
-DROP TABLE IF EXISTS `StoreAddressAssociation`;
-CREATE TABLE `StoreAddressAssociation` (
-  `storeId` bigint(20) NOT NULL COMMENT 'µêÆÌÖ÷¼üid',
-  `addressId` bigint(20) NOT NULL COMMENT 'µØÖ·Ö÷¼üid',
-  `isDeleted` bit(1) NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-	 PRIMARY KEY (`storeId`,`addressId`)	
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of StoreAddressAssociation
--- ----------------------------
--- ----------------------------
--- Table structure for StoreApplication
--- µêÆÌÉóºË±í
--- ¼ÇÂ¼ÉóºËÖĞµÄµêÆÌ¡£¼°ÉóºË½á¹û
--- ----------------------------
-DROP TABLE IF EXISTS `StoreApplication`;
-CREATE TABLE `StoreApplication` (
-  `storeId` bigint(20) NOT NULL  COMMENT 'ÉÌ¼Òid',
-  `state` int(11) NOT NULL COMMENT '0 ÉóºËÖĞ 1ÉóºË³É¹¦ 2ÉóºËÊ§°Ü',
-  `applicationResult` varchar(20) NOT NULL  COMMENT 'ÉóºË½á¹û',
-  `isDeleted` bit NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`storeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of StoreApplication
--- ----------------------------
--- ----------------------------
--- Table structure for StoreApplicationPictureAssociation
--- µêÆÌÉóºË±í
--- ¼ÇÂ¼ÉóºËÖĞµÄµêÆÌ¡£¼°ÉóºË½á¹û
--- ----------------------------
-DROP TABLE IF EXISTS `StoreApplicationPictureAssociation`;
-CREATE TABLE `StoreApplicationPictureAssociation` (
-  `storeId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'µêÆÌÖ÷¼üid',
-  `pictureId` int(11) NOT NULL COMMENT 'Í¼Æ¬Ö÷¼üid',
-  `isDeleted` bit NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`storeId`,`pictureId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of StoreApplicationPictureAssociation
--- ----------------------------
--- ----------------------------
--- Records of Transcation
--- ----------------------------
--- ----------------------------
--- Table structure for StoreAuth
--- ÉÌ¼ÒÕËºÅ±í
--- Ö÷Òª¼ÇÂ¼ÉÌ¼ÒÕËºÅµÄ ÃÜÔ¿ºÍ ÃÜÂë £¬ÒÔ¼°ÊÇ·ñ±»ºóÌ¨½ûÖ¹µÇÂ½
--- ----------------------------
-DROP TABLE IF EXISTS `StoreAuth`;
-CREATE TABLE `StoreAuth` (
-  `storeAuthId` bigint(20) NOT NULL AUTO_INCREMENT  COMMENT 'ÉÌ¼ÒÕËºÅÖ÷¼üid',
-  `storeId` bigint(20) NOT NULL  COMMENT 'ÉÌ¼Òid',
-  `password` varchar(255) NOT NULL COMMENT 'ÃÜÂë',
-  `storeSecretkey` bigint(20) NOT NULL  COMMENT 'ÉÌ¼ÒÃØÔ¿',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '×¢²áÊ±¼ä',
-  `allowBackgroundLogin` varchar(255) NOT NULL DEFAULT TRUE COMMENT 'ÔÊĞíºóÌ¨µÇÂ½',
-  `allowLogin` varchar(255) NOT NULL  DEFAULT TRUE COMMENT 'ÔÊĞíÒÆ¶¯¶ËµÇÂ½',
-  PRIMARY KEY (`storeAuthId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of StoreAuth
--- ----------------------------
--- ----------------------------
--- Table structure for StorePictureAssociation
--- µêÆÌ-Í¼Æ¬¹ØÁª±í
--- Ö÷ÒªÓÃÓÚ¹ØÁª Í¼Æ¬ ±íºÍ µêÆÌ±í
--- ----------------------------
-DROP TABLE IF EXISTS `StorePictureAssociation`;
-CREATE TABLE `StorePictureAssociation` (
-  `storeId` bigint(20) NOT NULL COMMENT 'µêÆÌÖ÷¼üid',
-  `pictureId` bigint(20) NOT NULL COMMENT 'Í¼Æ¬Ö÷¼üid',
-  `isDeleted` bit NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-PRIMARY KEY (`storeId`,`pictureId`)
+  `comboId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'Comboè¡¨ä¸»é”®id',
+  `comboCount` bigint(20) NOT NULL DEFAULT 0 COMMENT 'å¥—é¤æ•°é‡',
+  `foodItemId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'èœå“è¡¨ä¸»é”®ç¼–å·',
+  `foodItemCount` int(11) NOT NULL DEFAULT 0 COMMENT 'èœå“ä»½æ•°',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `updatedAt` datetime NOT NULL COMMENT 'ä¿®æ”¹æ—¶é—´',
+  PRIMARY KEY (`shoppingCartLineItemId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of StorePictureAssociation
+-- Table structure for store
 -- ----------------------------
-
--- ----------------------------
--- Table structure for Transcation
--- ÏµÍ³Á÷Ë®±í
--- ¼ÇÂ¼ÏµÍ³ ºÍÎ¢ĞÅ Ö§¸¶±¦ »òÕßÒøÁª £¬applePay Ö®¼ä·¢ÉúµÄ½»Ò×¡£
--- ÓÉÓÃ»§ºÍÉÌ¼Ò·¢ÆğÇëÇó£¬Í¨¹ıÏµÍ³ Ïò Ö§¸¶½á¹¹ ·¢ÆğÖ§¸¶»ò×ªÕËÇëÇó£¬
--- ÓÉÖ§¸¶½á¹¹ ·´À¡ÇëÇó ½á¹ûµ½ÏµÍ³£¬Èç¹û³É¹¦ĞŞ¸Ä ÇëÇóĞÅÏ¢£¬Èç¹ûÊ§°ÜËµÃ÷Ô­Òò
--- Èç  ÏµÍ³Óà¶î²»×ã£¬ ÏµÍ³ ¿ÉÍ¨¹ı¶ÌĞÅµÄ·½Ê½£¬Í¨¹ı³¬¼¶¹ÜÀíÔ±¡£
--- ----------------------------
-DROP TABLE IF EXISTS `Transcation`;
-CREATE TABLE `Transcation` (
-  `transcationId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ÏµÍ³Á÷Ë®Ö÷¼ü±àºÅ',
-  `orderId` bigint(20) NOT NULL DEFAULT -1 COMMENT '¶©µ¥±àºÅ',
-  `transcationNumber` bigint(20) NOT NULL COMMENT 'Á÷Ë®ºÅ£¨¿ÉÄÜÊÇÎ¢ĞÅµÄÁ÷Ë®ºÅ£¬Ö§¸¶±¦»òÕßÒøÁª£©',
-  `amount` decimal(10,0) NOT NULL COMMENT '½ğ¶î',
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '´´½¨Ê±¼ä',
-  `paymentMethod` int(11) NOT NULL COMMENT 'Ö§¸¶·½Ê½£º Î¢ĞÅ£¬ Ö§¸¶°ü£¬ÒøÁª',
-  `type` int(11) NOT NULL COMMENT 'ÓÃÍ¾£º0 Ö§¸¶£¬ 1ÌáÏÖ 2³äÖµ 3ÍË¿î',
-  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ÓÃ»§Ö÷¼üid',
-  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ÉÌ¼Ò±àºÅ',
-  `isSucess` int(11) NOT NULL DEFAULT FALSE COMMENT '0 µÈ´ıÖĞ£¬1³äÖµ³É¹¦ 2 ³äÖµÊ§°Ü',
-  `failReson` varchar(255) NOT NULL DEFAULT '' COMMENT 'Ê§°ÜÔ­Òò',
-  `isDeleted` bit NOT NULL  DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`transcationId`)
+DROP TABLE IF EXISTS `store`;
+CREATE TABLE `store`  (
+  `storeId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'å•†å®¶id',
+  `phoneNumber` varchar(25) NULL DEFAULT '' COMMENT 'ç”µè¯å·ç ',
+  `email` varchar(25) NULL DEFAULT '' COMMENT 'é‚®ç®±',
+  `wechatOpenid` varchar(25) NULL DEFAULT '' COMMENT 'å¾®ä¿¡id',
+  `phoneNumberIsValidated` varchar(25) NULL DEFAULT '' COMMENT 'ç”µè¯å·ç ',
+  `emailIsValidated` varchar(25) NULL DEFAULT '' COMMENT 'é‚®ç®±',
+  `wechatOpenidIsValidated` varchar(25) NULL DEFAULT '' COMMENT 'å¾®ä¿¡id',
+  `nickName` varchar(255) NULL DEFAULT '' COMMENT 'æ˜µç§°',
+  `firstName` varchar(50) NULL DEFAULT '' COMMENT 'å',
+  `lastName` varchar(50) NULL DEFAULT '' COMMENT 'å§“',
+  `sex` bit(1) NULL DEFAULT b'0' COMMENT 'æ€§åˆ«',
+  `balance` decimal(10, 0) NULL DEFAULT 0 COMMENT 'ä½™é¢',
+  `storeName` varchar(50) NULL DEFAULT '' COMMENT 'åº—é“ºåç§°',
+  `averageScore` double(10, 2) NULL DEFAULT 0.00 COMMENT 'ç»¼åˆè¯„åˆ†',
+  `star` int(11) NULL DEFAULT 0 COMMENT 'æ˜Ÿçº§',
+  `introduction` varchar(50) NULL DEFAULT '' COMMENT 'ç®€ä»‹',
+  `businessAddress` varchar(50) NULL DEFAULT '' COMMENT 'åº—é“ºåœ°å€ çœŸå®åœ°å€',
+  `isDeleted` bit(1) NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  `avatarPictureId` bigint(20) NULL DEFAULT -1 COMMENT 'å¤´åƒå¯¹åº”å›¾ç‰‡id',
+  PRIMARY KEY (`storeId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of Transcation
+-- Table structure for storeaddressassociation
 -- ----------------------------
+DROP TABLE IF EXISTS `storeaddressassociation`;
+CREATE TABLE `storeaddressassociation`  (
+  `storeId` bigint(20) NOT NULL COMMENT 'åº—é“ºä¸»é”®id',
+  `addressId` bigint(20) NOT NULL COMMENT 'åœ°å€ä¸»é”®id',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`storeId`, `addressId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Table structure for storeapplication
+-- ----------------------------
+DROP TABLE IF EXISTS `storeapplication`;
+CREATE TABLE `storeapplication`  (
+  `storeId` bigint(20) NOT NULL COMMENT 'å•†å®¶id',
+  `state` int(11) NOT NULL DEFAULT 0 COMMENT '0 å®¡æ ¸ä¸­ 1å®¡æ ¸æˆåŠŸ 2å®¡æ ¸å¤±è´¥',
+  `applicationResult` varchar(20) NOT NULL DEFAULT '' COMMENT 'å®¡æ ¸ç»“æœ',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`storeId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for Wallet
--- ÓÃ»§Ç®°ü±í
--- ¼ÇÂ¼ÓÃ»§ Ïû·Ñ£¬³äÖµ£¬ÌáÏÖ£¬ÍË¿î µÈ½»Ò×¼ÇÂ¼¡£
+-- Table structure for storeapplicationpictureassociation
 -- ----------------------------
-DROP TABLE IF EXISTS `Wallet`;
-CREATE TABLE `Wallet` (
+DROP TABLE IF EXISTS `storeapplicationpictureassociation`;
+CREATE TABLE `storeapplicationpictureassociation`  (
+  `storeId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'åº—é“ºä¸»é”®id',
+  `pictureId` int(11) NOT NULL COMMENT 'å›¾ç‰‡ä¸»é”®id',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`storeId`, `pictureId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for storeauth
+-- ----------------------------
+DROP TABLE IF EXISTS `storeauth`;
+CREATE TABLE `storeauth`  (
+  `storeAuthId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'å•†å®¶è´¦å·ä¸»é”®id',
+  `storeId` bigint(20) NULL DEFAULT -1 COMMENT 'å•†å®¶id',
+  `password` varchar(255) NULL DEFAULT '' COMMENT 'å¯†ç ',
+  `storeSecretkey` varchar(200) NULL DEFAULT '' COMMENT 'å•†å®¶ç§˜é’¥',
+  `createdAt` datetime NULL DEFAULT NULL COMMENT 'æ³¨å†Œæ—¶é—´',
+  `allowBackgroundLogin` varchar(255) NULL DEFAULT '' COMMENT 'å…è®¸åå°ç™»é™†',
+  `allowLogin` varchar(255) NULL DEFAULT '' COMMENT 'å…è®¸ç§»åŠ¨ç«¯ç™»é™†',
+  PRIMARY KEY (`storeAuthId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for storepictureassociation
+-- ----------------------------
+DROP TABLE IF EXISTS `storepictureassociation`;
+CREATE TABLE `storepictureassociation`  (
+  `storeId` bigint(20) NOT NULL COMMENT 'åº—é“ºä¸»é”®id',
+  `pictureId` bigint(20) NOT NULL COMMENT 'å›¾ç‰‡ä¸»é”®id',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`storeId`, `pictureId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for transcation
+-- ----------------------------
+DROP TABLE IF EXISTS `transcation`;
+CREATE TABLE `transcation`  (
+  `transcationId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ç³»ç»Ÿæµæ°´ä¸»é”®ç¼–å·',
+  `orderId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'è®¢å•ç¼–å·',
+  `transcationNumber` bigint(20) NOT NULL DEFAULT -1 COMMENT 'æµæ°´å·ï¼ˆå¯èƒ½æ˜¯å¾®ä¿¡çš„æµæ°´å·ï¼Œæ”¯ä»˜å®æˆ–è€…é“¶è”ï¼‰',
+  `amount` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'é‡‘é¢',
+  `createdAt` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `paymentMethod` int(11) NOT NULL DEFAULT 0 COMMENT 'æ”¯ä»˜æ–¹å¼ï¼š å¾®ä¿¡ï¼Œ æ”¯ä»˜åŒ…ï¼Œé“¶è”',
+  `type` int(11) NOT NULL DEFAULT 0 COMMENT 'ç”¨é€”ï¼š0 æ”¯ä»˜ï¼Œ 1æç° 2å……å€¼ 3é€€æ¬¾',
+  `customerId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ä¸»é”®id',
+  `storeId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å•†å®¶ç¼–å·',
+  `isSucess` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦æˆåŠŸ',
+  `failReson` varchar(255) NOT NULL DEFAULT '' COMMENT 'å¤±è´¥åŸå› ',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`transcationId`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for wallet
+-- ----------------------------
+DROP TABLE IF EXISTS `wallet`;
+CREATE TABLE `wallet`  (
   `walletId` bigint(20) NOT NULL,
-  `walleType` int(11) NOT NULL COMMENT 'Á÷Ë®ÀàĞÍ£º0 Ö§¸¶£¬ 1ÌáÏÖ 2³äÖµ 3ÍË¿î',
-  `peopleType` varchar(20) NOT NULL COMMENT 'ÓÃ»§ÀàĞÍ£¨¿ÉÒÔÊÇ ÉÌ¼ÒºÍÓÃ»§£©',
-  `transcationId` varchar(20) NOT NULL COMMENT '¶ÔÓ¦¼ÇÂ¼µÄ ÏµÍ³Á÷Ë®¡£½»Ò×ÓĞÕùÂÛ£¬ÎÒÃÇ¿ÉÒÔ×·Ëİµ½ ÏµÍ³Á÷Ë® »ñÈ¡×ªÕË·½Ê½ºÍ¶ÔÓ¦ÒøĞĞ»òÕßÖ§¸¶½Ó¿Ú Á÷Ë®µ¥ºÅ',
-  `peopleId` bigint(20) NOT NULL  COMMENT 'ÓÃ»§±àºÅ£¨ÉÌ¼Ò±àºÅ»òÕßÓÃ»§±àºÅ£©',
-  `amount` decimal(10,0) NOT NULL COMMENT '½ğ¶î',
-  `createdAt` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP() COMMENT '²Ù×÷Ê±¼ä',
-  `lastUpdatedAt` datetime  NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '×îºóĞŞ¸ÄÊ±¼ä',
-  `isDeleted` bit NOT NULL DEFAULT FALSE COMMENT 'ÊÇ·ñÉ¾³ı',
-  PRIMARY KEY (`walletId`)
+  `walleType` int(11) NOT NULL DEFAULT 0 COMMENT 'æµæ°´ç±»å‹ï¼š0 æ”¯ä»˜ï¼Œ 1æç° 2å……å€¼ 3é€€æ¬¾',
+  `peopleType` varchar(20) NOT NULL DEFAULT '0' COMMENT 'ç”¨æˆ·ç±»å‹ï¼ˆå¯ä»¥æ˜¯ å•†å®¶å’Œç”¨æˆ·ï¼‰',
+  `transcationId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'å¯¹åº”è®°å½•çš„ ç³»ç»Ÿæµæ°´ã€‚äº¤æ˜“æœ‰äº‰è®ºï¼Œæˆ‘ä»¬å¯ä»¥è¿½æº¯åˆ° ç³»ç»Ÿæµæ°´ è·å–è½¬è´¦æ–¹å¼å’Œå¯¹åº”é“¶è¡Œæˆ–è€…æ”¯ä»˜æ¥å£ æµæ°´å•å·',
+  `peopleId` bigint(20) NOT NULL DEFAULT -1 COMMENT 'ç”¨æˆ·ç¼–å·ï¼ˆå•†å®¶ç¼–å·æˆ–è€…ç”¨æˆ·ç¼–å·ï¼‰',
+  `amount` decimal(10, 0) NOT NULL DEFAULT 0 COMMENT 'é‡‘é¢',
+  `createdAt` datetime NOT NULL COMMENT 'æ“ä½œæ—¶é—´',
+  `lastUpdatedAt` datetime NOT NULL COMMENT 'æœ€åä¿®æ”¹æ—¶é—´',
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'æ˜¯å¦åˆ é™¤',
+  PRIMARY KEY (`walletId`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of Wallet
--- ----------------------------
+SET FOREIGN_KEY_CHECKS = 1;
